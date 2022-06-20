@@ -3,7 +3,7 @@ title: "Day 2: Getting Started with R(Studio)"
 subtitle: "Data Carpentries for Social Sciences"  
 institute: |
   Leiden University, TU Delft, & Erasmus University Rotterdam
-date: '2022-02-22 *(Updated: `r Sys.Date()`)*'
+date: '2022-06-27 *(Updated: `r Sys.Date()`)*'
 output:
   xaringan::moon_reader:
     css: xaringan-themer.css
