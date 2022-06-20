@@ -44,7 +44,7 @@ layout: true
 class: center, middle
 ---
 
-## XXXX
+## Why R?
 
 --
 
