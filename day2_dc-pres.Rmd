@@ -1,5 +1,5 @@
 ---
-title: "Day 2: Getting Started with R(Studio)"
+title: "Day 2, part 1: Introduction to R(Studio)"
 subtitle: "Data Carpentries for Social Sciences"  
 institute: |
   Leiden University, TU Delft, & Erasmus University Rotterdam
@@ -33,10 +33,10 @@ knitr::opts_chunk$set(
 ```{r xaringan-themer, include=FALSE, warning=FALSE}
 library(xaringanthemer)
 style_duo(
-  primary_color = "#481567ff",
-  secondary_color = "#20a387ff",
-  text_bold_color = "#33638DFF", 
-  code_inline_color = "#fde725ff"
+  primary_color ='#FFFFFF' ,#"#481567ff",
+  secondary_color = '#00A6D6' ,#"#20a387ff",
+  text_bold_color = '#000000',#"#33638DFF", 
+  code_inline_color ='#FFB81C'#"#fde725ff"
 )
 ```
 
@@ -48,19 +48,24 @@ class: center, middle
 
 --
 
-It's a programming language/software that is free and open source! `r emo::ji("celebrate")`
+It is a **free**, **open-source** and **cross-platform** programming 
+language/software! `r emo::ji("celebrate")`
 
 --
 
-It was created by statisticians for statistics `r emo::ji("glasses")`
+It was created by statisticians for **statistics** `r emo::ji("glasses")`
 
 --
 
-Because it's open source and works with scripts, it's great for reproducibility `r emo::ji("strong")`
+It's script-based, hence great for **reproducibility** `r emo::ji("strong")`
 
 --
 
-Did I mention FREE?
+It produces beautiful **data vizualisations**! `r emo::ji("chart increasing")`
+
+--
+
+Did I mention **FREE**?
 
 ---
 
@@ -72,13 +77,13 @@ RStudio is an integrated development environment (IDE)
 
 --
 
-It's essentially a (much prettier) wrapper for the R software
+It provides a (much prettier) interface for the R software
 
 --
 
-R is integrated into RStudio, so you never actually have to open R
+R is integrated into RStudio, so you never actually have to open R ....
 --
-, which is a good thing...
+ which is a good thing...
 
 
 ---
@@ -89,13 +94,52 @@ R is integrated into RStudio, so you never actually have to open R
 
 ---
 
+## File paths
+
+An absolute file path `r emo::ji("sad")`
+
+```{r eval=FALSE}
+"~/path/is/probably/unique/to/me/data-carpentry/data/SAFI_clean.csv"
+```
+
+--
+
+A relative file path `r emo::ji("happy")`
+
+```{r eval=FALSE}
+"./data/SAFI_clean.csv"
+```
+
+--
+
+Which type is better for collaboration?
+
+---
+
+## File paths
+
+If we use `setwd()` we have to use absolute file paths.
+
+--
+
+If we combine **here** with RStudio Projects we can work with relative paths.
+
+--
+
+That always start at the project root (data-carpentry/)
+
+<img src="assets/img/cracked_setwd.png" width=500 />
+
+---
+---
+
 ## Basics of R
 
 R is a language spoken by the R software
 
 --
 
-Software can be very 'dumb'
+Software is not good at interpreting things
 
 --
 
@@ -104,9 +148,12 @@ what we want
 
 --
 
-And this can be very tedious and boring...
+But unlike with a natural language, knowing a few R 'words' and 'phrases' 
+can take us really far!
+
 --
- Sorry? `r emo::ji("shrug")`
+ 
+ It's a beginning of a journey! `r emo::ji("luggage")`
 
 ---
 class: center, middle
@@ -114,10 +161,23 @@ class: center, middle
 Things to look forward to:
 
 ```{r example-plot2, echo=FALSE}
-interviews_plotting %>% 
-   ggplot(aes(x = no_membrs, y = number_items, color = village)) +
-   geom_count() +
-   theme_minimal()
+library(data.table)
+ints<-as.data.table(interviews_plotting)
+ints_plotting<-ints[,.N, by=.(no_membrs, number_items,village) ]
+
+ints_plotting %>% 
+   ggplot(aes(x = no_membrs, y = number_items, color = village, size = N)) +
+   geom_jitter(alpha= 0.6) +
+   scale_size(range=c(2,8),
+             breaks=c(1,2,3),
+             labels=c("1","2","3"),
+             name = "Group Size",
+             guide="legend") +
+  ylab('Number of items')+
+  xlab('Number of family members')+
+  #scale_color_manual(values = c('#a6cee3','#1f78b4','#b2df8a')) +
+  scale_color_viridis_d(name="Village") +
+  theme_minimal()
 ```
 
 
@@ -126,18 +186,26 @@ interviews_plotting %>%
 Things to look forward to:
 
 ```{r example-plot3, echo=FALSE}
-percent_wall_type <- interviews_plotting %>%
-    filter(respondent_wall_type != "cement") %>%
-    count(village, respondent_wall_type) %>%
-    group_by(village) %>%
-    mutate(percent = (n / sum(n)) * 100) %>%
-    ungroup()
+# percent_wall_type <- interviews_plotting %>%
+#     filter(respondent_wall_type != "cement") %>%
+#     count(village, respondent_wall_type) %>%
+#     group_by(village) %>%
+#     mutate(percent = (n / sum(n)) * 100) %>%
+#     ungroup()
+
+percent_wall_type <- ints[respondent_wall_type != "cement", .N, by = .(village, respondent_wall_type) ]
+percent_wall_type[,percent := round((N / sum(N)) * 100), by=village]
+
 
 percent_wall_type %>%
     ggplot(aes(x = village, y = percent, fill = respondent_wall_type)) +
     geom_bar(stat = "identity", position = "dodge") +
     theme_minimal() +
-    scale_fill_viridis_d() # add colourblind-friendly palette
+    xlab('Village') +
+    ylab('Percent') +
+    theme(panel.grid.major.x  = element_blank())+
+    #scale_fill_viridis_d() # add colourblind-friendly palette
+    scale_fill_manual(values = c('#a6cee3','#1f78b4','#b2df8a'), name = 'Wall type')
 ```
 
 ---
@@ -157,7 +225,7 @@ Create two variables `r_length` and `r_width` and assign them values.
 Create a third variable `r_area` and give it a value by multiplying `r_length`
 and `r_width`.
 
-`r countdown::countdown(minutes = 5, color_running_background  = "lightgreen", color_running_text = "black", color_finished_background = "red", color_finished_text =  "grey30")`
+`r countdown::countdown(minutes = 5, color_running_background  = "#6CC24A", color_running_text = "black", color_finished_background = "#E03C31", color_finished_text =  "grey30")`
 
 --
 
@@ -180,7 +248,7 @@ Type `?round` into the **console** to open the help page for the `round()` funct
 
 Find the appropriate function to round `1.624` down to the nearest integer.
 
-`r countdown::countdown(minutes = 5, color_running_background  = "lightgreen", color_running_text = "black", color_finished_background = "red", color_finished_text =  "grey30")`
+`r countdown::countdown(minutes = 5, color_running_background  = "#6CC24A", color_running_text = "black", color_finished_background = "#E03C31", color_finished_text =  "grey30")`
 
 --
 
@@ -210,7 +278,7 @@ tricky <- c(1, 2, 3, "4")
 
 Why does this happen?
 
-`r countdown::countdown(minutes = 10, color_running_background  = "lightgreen", color_running_text = "black", color_finished_background = "red", color_finished_text =  "grey30")`
+`r countdown::countdown(minutes = 10, color_running_background = "#6CC24A", color_running_text = "black", color_finished_background = "#E03C31", color_finished_text =  "grey30")`
 
 ---
 class: inverse
@@ -246,7 +314,7 @@ char_logical <- c("a", "b", "c", TRUE)
 combined_logical <- c(num_logical, char_logical)
 ```
 
-`r countdown::countdown(minutes = 5, color_running_background  = "lightgreen", color_running_text = "black", color_finished_background = "red", color_finished_text =  "grey30")`
+`r countdown::countdown(minutes = 5, color_running_background = "#6CC24A", color_running_text = "black", color_finished_background = "#E03C31", color_finished_text =  "grey30")`
 
 --
 
@@ -300,151 +368,112 @@ rooms_above_2 <- rooms_no_na[rooms_no_na > 2]
 length(rooms_above_2)
 ```
 
----
+<!-- --- -->
 
-## Importing data
+<!-- ## Importing data -->
 
----
-class: inverse
+<!-- --- -->
+<!-- class: inverse -->
 
-## Practice dataset
+<!-- ## Practice dataset -->
 
-|column_name |	description |
-|----|----|
-|key_id | 	Added to provide a unique Id for each observation. (The InstanceID field does this as well but it is not as convenient to use) |
-|village |	Village name |
-|interview_date |	Date of interview |
-|no_membrs |	How many members in the household? |
-|years_liv |	How many years have you been living in this village or neighboring village? |
-|respondent_wall_type | 	What type of walls does their house have (from list) |
-|rooms |	How many rooms in the main house are used for sleeping? |
-|memb_assoc |	Are you a member of an irrigation association? |
-|affect_conflicts |	Have you been affected by conflicts with other irrigators in the area? |
-|liv_count |	Number of livestock owned. |
-|items_owned  |	Which of the following items are owned by the household? (list) |
-|no_meals |	How many meals do people in your household normally eat in a day? |
-|months_lack_food |	Indicate which months, In the last 12 months have you faced a situation when you did not have enough food to feed the household? |
-| instanceID  |	Unique identifier for the form data submission |
+<!-- |column_name |	description | -->
+<!-- |----|----| -->
+<!-- |key_id | 	Added to provide a unique Id for each observation. (The InstanceID field does this as well but it is not as convenient to use) | -->
+<!-- |village |	Village name | -->
+<!-- |interview_date |	Date of interview | -->
+<!-- |no_membrs |	How many members in the household? | -->
+<!-- |years_liv |	How many years have you been living in this village or neighboring village? | -->
+<!-- |respondent_wall_type | 	What type of walls does their house have (from list) | -->
+<!-- |rooms |	How many rooms in the main house are used for sleeping? | -->
+<!-- |memb_assoc |	Are you a member of an irrigation association? | -->
+<!-- |affect_conflicts |	Have you been affected by conflicts with other irrigators in the area? | -->
+<!-- |liv_count |	Number of livestock owned. | -->
+<!-- |items_owned  |	Which of the following items are owned by the household? (list) | -->
+<!-- |no_meals |	How many meals do people in your household normally eat in a day? | -->
+<!-- |months_lack_food |	Indicate which months, In the last 12 months have you faced a situation when you did not have enough food to feed the household? | -->
+<!-- | instanceID  |	Unique identifier for the form data submission | -->
 
----
 
-## File paths
+<!-- ## Importing data -->
 
-An absolute file path `r emo::ji("sad")`
+<!-- Start a new script. -->
 
-```{r eval=FALSE}
-"~/path/is/probably/unique/to/me/data-carpentry/data/SAFI_clean.csv"
-```
+<!-- -- -->
 
---
+<!-- We'll be using the `read_csv` function to upload the *SAFI_clean.csv* file. -->
 
-A relative file path `r emo::ji("happy")`
+<!-- -- -->
 
-```{r eval=FALSE}
-"./data/SAFI_clean.csv"
-```
+<!-- The base-R equivalent is `read.csv` which we will NOT be using -->
 
---
+<!-- -- -->
 
-Which type is better for collaboration?
+<!-- We need to load the **tidyverse** and **here** packages. -->
 
----
+<!-- -- -->
 
-## File paths
+<!-- You should always load packages at the top of your script. -->
 
-If we use `setwd()` we have to use absolute file paths.
+<!-- --- -->
 
---
+<!-- ## Importing data -->
 
-If we combine **here** with RStudio Projects we can work with relative paths.
+<!-- ```{r import-error, eval=FALSE} -->
+<!-- library(tidyverse) -->
+<!-- library(here) -->
+<!-- interviews <- read_csv(here("data", "SAFI_clean.csv"), -->
+<!--                        na = "NULL") -->
+<!-- ``` -->
 
---
+<!-- ```{r import-error-out, echo=FALSE, message=FALSE} -->
+<!-- interviews_wrong <- read_csv("data/SAFI_clean.csv", na = "NULL") -->
+<!-- ``` -->
 
-That always start at the project root (data-carpentry/)
+<!-- --- -->
+<!-- class: inverse -->
 
-<img src="assets/img/cracked_setwd.png" width=500 />
+<!-- ## Exercise ? -->
 
----
+<!-- `r emo::ji("clock")` **5 mins** -->
 
-## Importing data
+<!-- Create an object `n_rows <- nrow(interviews)` -->
 
-Start a new script.
+<!-- Use that object to create a tibble (call it `interviews_end`) containing only the data from row 100 to the last row of `interviews`. -->
 
---
+<!-- `r countdown::countdown(minutes = 5, color_running_background  = "lightgreen", color_running_text = "black", color_finished_background = "red", color_finished_text =  "grey30")` -->
 
-We'll be using the `read_csv` function to upload the *SAFI_clean.csv* file.
+<!-- -- -->
 
---
+<!-- ### Solution -->
 
-The base-R equivalent is `read.csv` which we will NOT be using
+<!-- ```{r} -->
+<!-- n_rows <- nrow(interviews) -->
+<!-- interviews[100:n_rows, ] -->
+<!-- ``` -->
 
---
+<!-- --- -->
 
-We need to load the **tidyverse** and **here** packages.
+<!-- ## Done for the day -->
 
---
+<!-- Save your script -->
 
-You should always load packages at the top of your script.
+<!-- -- -->
 
----
+<!-- Close the RStudio Project (Don't save data) -->
 
-## Importing data
+<!-- -- -->
 
-```{r import-error, eval=FALSE}
-library(tidyverse)
-library(here)
-interviews <- read_csv(here("data", "SAFI_clean.csv"),
-                       na = "NULL")
-```
+<!-- Close RStudio -->
 
-```{r import-error-out, echo=FALSE, message=FALSE}
-interviews_wrong <- read_csv("data/SAFI_clean.csv", na = "NULL")
-```
+<!-- -- -->
 
----
-class: inverse
+<!-- Next time you open the Project, you'll start with a clean environment -->
 
-## Exercise ?
+<!-- -- -->
 
-`r emo::ji("clock")` **5 mins**
+<!-- To pick up where you left off, you should run your script (Ctrl + Alt + R) -->
 
-Create an object `n_rows <- nrow(interviews)`
+<!-- -- -->
 
-Use that object to create a tibble (call it `interviews_end`) containing only the data from row 100 to the last row of `interviews`.
-
-`r countdown::countdown(minutes = 5, color_running_background  = "lightgreen", color_running_text = "black", color_finished_background = "red", color_finished_text =  "grey30")`
-
---
-
-### Solution
-
-```{r}
-n_rows <- nrow(interviews)
-interviews[100:n_rows, ]
-```
-
----
-
-## Done for the day
-
-Save your script
-
---
-
-Close the RStudio Project (Don't save data)
-
---
-
-Close RStudio
-
---
-
-Next time you open the Project, you'll start with a clean environment
-
---
-
-To pick up where you left off, you should run your script (Ctrl + Alt + R)
-
---
-
-This ensures your script is always reproducible!
+<!-- This ensures your script is always reproducible! -->
