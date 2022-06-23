@@ -92,45 +92,7 @@ R is integrated into RStudio, so you never actually have to open R ....
 
 ![](https://media.giphy.com/media/ggtpYV17RP9lTbc542/giphy.gif)
 
----
 
-## File paths
-
-An absolute file path `r emo::ji("sad")`
-
-```{r eval=FALSE}
-"~/path/is/probably/unique/to/me/data-carpentry/data/SAFI_clean.csv"
-```
-
---
-
-A relative file path `r emo::ji("happy")`
-
-```{r eval=FALSE}
-"./data/SAFI_clean.csv"
-```
-
---
-
-Which type is better for collaboration?
-
----
-
-## File paths
-
-If we use `setwd()` we have to use absolute file paths.
-
---
-
-If we combine **here** with RStudio Projects we can work with relative paths.
-
---
-
-That always start at the project root (data-carpentry/)
-
-<img src="assets/img/cracked_setwd.png" width=500 />
-
----
 ---
 
 ## Basics of R
@@ -371,7 +333,45 @@ length(rooms_above_2)
 <!-- --- -->
 
 <!-- ## Importing data -->
+<!-- --- -->
 
+<!-- ## File paths -->
+
+<!-- An absolute file path `r emo::ji("sad")` -->
+
+<!-- ```{r eval=FALSE} -->
+<!-- "~/path/is/probably/unique/to/me/data-carpentry/data/SAFI_clean.csv" -->
+<!-- ``` -->
+
+<!-- -- -->
+
+<!-- A relative file path `r emo::ji("happy")` -->
+
+<!-- ```{r eval=FALSE} -->
+<!-- "./data/SAFI_clean.csv" -->
+<!-- ``` -->
+
+<!-- -- -->
+
+<!-- Which type is better for collaboration? -->
+
+<!-- --- -->
+
+<!-- ## File paths -->
+
+<!-- If we use `setwd()` we have to use absolute file paths. -->
+
+<!-- -- -->
+
+<!-- If we combine **here** with RStudio Projects we can work with relative paths. -->
+
+<!-- -- -->
+
+<!-- That always start at the project root (data-carpentry/) -->
+
+<!-- <img src="assets/img/cracked_setwd.png" width=500 /> -->
+
+<!-- --- -->
 <!-- --- -->
 <!-- class: inverse -->
 
