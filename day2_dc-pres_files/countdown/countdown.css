@@ -28,15 +28,15 @@
   color: inherit;
 }
 .countdown.running {
-  border-color: #81D681;
-  background-color: lightgreen;
+  border-color: #61AE42;
+  background-color: #6CC24A;
 }
 .countdown.running .countdown-digits {
   color: black;
 }
 .countdown.finished {
-  border-color: #E50000;
-  background-color: red;
+  border-color: #C9362C;
+  background-color: #E03C31;
 }
 .countdown.finished .countdown-digits {
   color: grey30;
@@ -46,7 +46,7 @@
   background-color: #E6C229;
 }
 .countdown.running.warning .countdown-digits {
-  color: #39300A;
+  color: #3930AA;
 }
 
 @-webkit-keyframes blink {
