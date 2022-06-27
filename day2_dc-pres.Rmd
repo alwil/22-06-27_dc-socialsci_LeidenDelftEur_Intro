@@ -1,6 +1,6 @@
 ---
-title: "Day 2, part 1: Introduction to R(Studio)"
-subtitle: "Data Carpentries for Social Sciences"  
+title: "Data Carpentry: R for Social Sciences" 
+subtitle: "Day 2, part 1: Introduction to R(Studio)"
 institute: |
   Leiden University, TU Delft, & Erasmus University Rotterdam
 date: '2022-06-27 *(Updated: `r Sys.Date()`)*'
@@ -62,10 +62,6 @@ It's script-based, hence great for **reproducibility** `r emo::ji("strong")`
 --
 
 It produces beautiful **data vizualisations**! `r emo::ji("chart increasing")`
-
---
-
-Did I mention **FREE**?
 
 ---
 
@@ -219,13 +215,36 @@ Find the appropriate function to round `1.624` down to the nearest integer.
 ```{r}
 floor(1.624)
 ```
+---
+
+## Data Types 
+
+**numeric** (e.g. `3.14`) 
+
+
+**character** (e.g. `'car'`)
+
+
+**integer** (e.g. `50L`)
+
+
+**logical** ( `TRUE` or `FALSE`)
+
+
+**complex**
+
+
+**raw**
+
+
+
 
 ---
 class: inverse
 
 ## Exercise 3
 
-`r emo::ji("clock")` **6 mins**
+`r emo::ji("clock")` **5 mins**
 
 What will happen in each of the examples below?
 
@@ -240,7 +259,7 @@ tricky <- c(1, 2, 3, "4")
 
 Why does this happen?
 
-`r countdown::countdown(minutes = 6, color_running_background = "#6CC24A", color_running_text = "black", color_finished_background = "#E03C31", color_finished_text =  "grey30")`
+`r countdown::countdown(minutes = 5, color_running_background = "#6CC24A", color_running_text = "black", color_finished_background = "#E03C31", color_finished_text =  "grey30")`
 
 ---
 class: inverse
