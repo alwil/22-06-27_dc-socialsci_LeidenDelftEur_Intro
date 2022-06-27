@@ -48,7 +48,7 @@ class: center, middle
 
 --
 
-It is a **free**, **open-source** and **cross-platform** programming 
+It is a **free** and **open-source** programming 
 language/software! `r emo::ji("celebrate")`
 
 --
@@ -59,9 +59,6 @@ It was created by statisticians for **statistics** `r emo::ji("glasses")`
 
 It's script-based, hence great for **reproducibility** `r emo::ji("strong")`
 
---
-
-It produces beautiful **data vizualisations**! `r emo::ji("chart increasing")`
 
 ---
 
@@ -87,6 +84,10 @@ R is integrated into RStudio, so you never actually have to open R ....
 ## Let's take the tour
 
 ![](https://media.giphy.com/media/ggtpYV17RP9lTbc542/giphy.gif)
+---
+## Organising working directory
+
+![](assets/img/rstudio_project_files.jpeg)
 
 
 ---
