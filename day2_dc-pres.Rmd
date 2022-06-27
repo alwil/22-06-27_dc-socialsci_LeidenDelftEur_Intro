@@ -1,5 +1,5 @@
 ---
-title: "Data Carpentry: R for Social Sciences" 
+title: "Data Carpentry for Social Sciences & Humanities" 
 subtitle: "Day 2, part 1: Introduction to R(Studio)"
 institute: |
   Leiden University, TU Delft, & Erasmus University Rotterdam
